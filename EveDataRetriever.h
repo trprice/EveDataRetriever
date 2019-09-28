@@ -3,8 +3,5 @@
 
 #pragma once
 
-#include <iostream>
 #include <cpprest/http_client.h>
 #include <cpprest/filestream.h>
-
-// TODO: Reference additional headers your program requires here.

@@ -12,7 +12,7 @@ using namespace web::http;                  // Common HTTP functionality
 using namespace web::http::client;          // HTTP client features
 using namespace concurrency::streams;       // Asynchronous streams
 
-int main()
+int main(int argc, char* argv[])
 {
 	auto fileStream = std::make_shared<ostream>();
 
@@ -30,27 +30,30 @@ int main()
 			return client.request(methods::GET, builder.to_string());
 		})
 
-	// Handle response headers arriving.
-	.then([=](http_response response)
-		{
-			printf("Received response status code:%u\n", response.status_code());
-		})
+		// Handle response headers arriving.
+			.then([=](http_response response)
+				{
+					printf("Received response status code:%u\n", response.status_code());
 
-	// Close the file stream.
-	.then([=](size_t)
-		{
-			return fileStream->close();
-		});
+					// Write response body into the file.
+					return response.body().read_to_end(fileStream->streambuf());
+				})
 
-	// Wait for all the outstanding I/O to complete and handle any exceptions
-	try
-	{
-		requestTask.wait();
-	}
-	catch (const std::exception& e)
-	{
-		printf("Error exception:%s\n", e.what());
-	}
+			// Close the file stream.
+					.then([=](size_t)
+						{
+							return fileStream->close();
+						});
 
-	return 0;
+				// Wait for all the outstanding I/O to complete and handle any exceptions
+				try
+				{
+					requestTask.wait();
+				}
+				catch (const std::exception& e)
+				{
+					printf("Error exception:%s\n", e.what());
+				}
+
+				return 0;
 }
