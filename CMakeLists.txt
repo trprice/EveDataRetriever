@@ -13,17 +13,12 @@ find_package(cpprestsdk
              CONFIG
              REQUIRED)
              
+# Use C++11
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 # Add source to this project's executable.
 add_executable (EveDataRetriever "EveDataRetriever.cpp" "EveDataRetriever.h")
-
-# Use C++11
-if (MSVC)
-	set_property(TARGET EveDataRetriever PROPERTY CMAKE_CXX_STANDARD 11)
-	set_property(TARGET EveDataRetriever PROPERTY CMAKE_CXX_STANDARD_REQUIRED ON)
-	set_property(TARGET EveDataRetriever PROPERTY CMAKE_CXX_EXTENSIONS OFF)
-else()
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-	add_definitions(-std=c++11)
-endif()
 
 target_link_libraries(EveDataRetriever PRIVATE cpprestsdk::cpprest cpprestsdk::cpprestsdk_zlib_internal cpprestsdk::cpprestsdk_boost_internal) #cpprestsdk::cpprestsdk_brotli_internal)
