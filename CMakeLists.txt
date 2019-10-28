@@ -13,6 +13,10 @@ find_package(cpprestsdk
              CONFIG
              REQUIRED)
 
+# No Boost Cmake is a fallback. Use Mutlithreaded *should* be the thing to use but it doesn't work for now.
+# 		See: https://gitlab.kitware.com/cmake/cmake/issues/19714
+#set( Boost_USE_MULTITHREADED ON )
+set(Boost_NO_BOOST_CMAKE 1)
 find_package(Boost COMPONENTS chrono thread REQUIRED)
              
 # Use C++11
