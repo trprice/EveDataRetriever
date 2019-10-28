@@ -12,6 +12,8 @@ project(EveDataRetriever)
 find_package(cpprestsdk
              CONFIG
              REQUIRED)
+
+find_package(Boost COMPONENTS chrono thread REQUIRED)
              
 # Use C++11
 set(CMAKE_CXX_STANDARD 11)
@@ -21,4 +23,4 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Add source to this project's executable.
 add_executable (EveDataRetriever "EveDataRetriever.cpp" "EveDataRetriever.h")
 
-target_link_libraries(EveDataRetriever PRIVATE cpprestsdk::cpprest cpprestsdk::cpprestsdk_zlib_internal cpprestsdk::cpprestsdk_boost_internal) #cpprestsdk::cpprestsdk_brotli_internal)
+target_link_libraries(EveDataRetriever PRIVATE cpprestsdk::cpprest cpprestsdk::cpprestsdk_zlib_internal cpprestsdk::cpprestsdk_boost_internal Boost::thread Boost::chrono) 
